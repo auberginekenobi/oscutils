@@ -1,0 +1,13 @@
+
+
+######################################
+library(DESeq2)
+library(optparse)
+
+### arguments
+option_list <- list(
+		make_option(c("-h", "--help"))
+        )
+
+opt <- parse_args(OptionParser(option_list=option_list)
+
