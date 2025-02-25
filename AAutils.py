@@ -39,8 +39,10 @@ class Segment:
 	
 	def __str__(self):
 		return '\t'.join(self.all())+'\n'
-	#def __copy__(self):
-	#	return Segment(self.chrom,self.start.self.end,self.name,self.strand)
+	
+	def __len__(self):
+		return int(self.end) - int(self.start)
+
 	
 class Cycle:
 	'''
@@ -68,7 +70,7 @@ class Cycle:
 			merged_seqs[0]=curr
 		return merged_seqs
 	
-	def __init__(self, filepath):
+	def __init__(self, filepath, cycle=1):
 		ordered_seqs = []
 		with open(filepath,'r') as f:
 			seqs = []
@@ -76,7 +78,8 @@ class Cycle:
 				if line.startswith('Segment'):
 					line = line.strip().split('\t')
 					seqs.append(Segment(line[2],line[3],line[4]))
-				elif line.startswith('Cycle'):
+				elif line.startswith(f'Cycle={str(cycle)}'):
+					line = line.strip()
 					line = line.split(';')[-1]
 					line = line.split('=')[-1]
 					line = line.split(',')
@@ -94,6 +97,9 @@ class Cycle:
 		for s in self.segments:
 			r+=str(s)
 		return r
+	
+	def __len__(self):
+		return sum(map(len,self.segments))
 	
 	def get_breakpoints(self):
 		bps=[]
