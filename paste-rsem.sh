@@ -11,7 +11,7 @@ for file in $INPUTDIR/*.genes.results; do
 	SAMPLE=$(basename $file .genes.results)
 	echo "Writing $SAMPLE ..."
 	if [ $first = true ]; then
-		awk -v header=$SAMPLE 'BEGIN {OFS="\t"} NR==1 {print $1, header} NR>1 {print $1 $5}' "$file" > $OUTFILE
+		awk -v header=$SAMPLE 'BEGIN {OFS="\t"} NR==1 {print $1, header} NR>1 {print $1, $5}' "$file" > $OUTFILE
 		first=false
 	else
 		paste "$OUTFILE" <(awk -v header=$SAMPLE 'BEGIN {OFS="\t"} NR==1 {print header} NR>1 {print $5}' $file) > temp.txt && \
